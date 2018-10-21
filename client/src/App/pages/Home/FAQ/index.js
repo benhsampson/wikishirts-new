@@ -51,15 +51,13 @@ const FAQ = () => (
           <Answer>
             We ship internationally for free. It takes about <B>3-10</B>
             business days in the United States and <B>3-17</B> business days
-            everywhere else in the world.
-            <LinkInline to="/shipping">Shipping & returns</LinkInline>
+            everywhere else in the world. See our <LinkInline to="/shipping">Shipping policy</LinkInline> for more.
           </Answer>
         </QA>
         <QA>
           <Question>What's the returns policy?</Question>
           <Answer>
-            Return it if you don't like it. No justification necessary.
-            <LinkInline to="/shipping">Shipping & returns</LinkInline>
+            Return it if you don't like it. Please <LinkInline to="/contact">Contact us</LinkInline>, or check out our <LinkInline to="/returns">Returns Policy</LinkInline>.
           </Answer>
         </QA>
         <QA>
@@ -68,8 +66,7 @@ const FAQ = () => (
             Probably not, there's definitely some profane stuff on at least one
             in those 5.7 million crowdsourced English Wikipedia articles out
             there. Luckily, we're not liable for what you choose to print a
-            shirt from. :D
-            <LinkInline to="/terms">Terms of service</LinkInline>
+            shirt from. :D <LinkInline to="/terms">Terms of service</LinkInline>
           </Answer>
         </QA>
       </QAsContainer>

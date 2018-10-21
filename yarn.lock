@@ -560,6 +560,12 @@ execa@^0.10.0:
     signal-exit "^3.0.0"
     strip-eof "^1.0.0"
 
+express-markdown-router@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/express-markdown-router/-/express-markdown-router-1.1.0.tgz#2fbde068b7cf305dbe40887bfc5466941e5ffcde"
+  dependencies:
+    marked "^0.3.5"
+
 express@^4.16.3:
   version "4.16.3"
   resolved "http://registry.npmjs.org/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
@@ -829,6 +835,10 @@ map-age-cleaner@^0.1.1:
   resolved "https://registry.yarnpkg.com/map-age-cleaner/-/map-age-cleaner-0.1.2.tgz#098fb15538fd3dbe461f12745b0ca8568d4e3f74"
   dependencies:
     p-defer "^1.0.0"
+
+marked@^0.3.5:
+  version "0.3.19"
+  resolved "http://registry.npmjs.org/marked/-/marked-0.3.19.tgz#5d47f709c4c9fc3c216b6d46127280f40b39d790"
 
 media-typer@0.3.0:
   version "0.3.0"

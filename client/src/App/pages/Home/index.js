@@ -151,8 +151,8 @@ class App extends Component {
     this.setState({
       selectedShirtLoading: true,
       selectedShirt: {
-        name: 'Loading...',
-        description: 'Working on it...',
+        name: name,
+        description: shirtDescription,
         price: 0,
         pageId: 0,
       },
@@ -175,7 +175,8 @@ class App extends Component {
   };
 
   convertDomToImage = () => {
-    // this.modal.convertToImage();
+    console.log('Calling convert DOM function in modal');
+    this.modal.convertDOMToImage();
   };
 
   changePreferredSize = newSize => this.props.changePreferredSize(newSize);

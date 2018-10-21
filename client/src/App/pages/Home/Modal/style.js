@@ -21,117 +21,44 @@ const OffScreenHDShirtRender = styled.div`
 `;
 
 const TempShirtContent = styled.div`
+  color: #222222;
+  cursor: default;
+  font-size: 50px;
+  line-height: 1.8;
+  left: 50%;
   position: absolute;
   pointer-events: none;
-  height: 1080px;
-  left: 50%;
+  height: 1000px;
   margin: auto;
-  width: 1080px;
+  width: 1000px;
   text-align: justify;
   transform: translateX(-50%);
-  top: 1080px;
-
-  ::selection {
-    background: transparent;
-    color: initial;
-  }
-`;
-
-const TempShirtHeader = styled.h1`
-  color: #222222;
-  cursor: default;
-  font-size: 72px;
-  font-family: Georgia, sans-serif;
-  font-weight: 1.4;
-  word-wrap: break-word;
-  width: 100%;
-
-  ::selection {
-    background: transparent;
-    color: initial;
-  }
-`;
-
-const TempShirtDivider = styled.hr`
-  border: 0;
-  border-bottom: 5px solid #DDDDDD;
-  margin: 0;
-
-  ::selection {
-    background: transparent;
-    color: initial;
-  }
-`;
-
-const TempShirtBranding = styled.p`
-  color: #555555;
-  cursor: default;
-  font-size: 36px;
-  font-family: Arial, sans-serif;
-  line-height: 2.5;
-
-  ::selection {
-    background: transparent;
-    color: initial;
-  }
-`;
-
-const TempShirtDescription = styled.p`
-  color: #222222;
-  cursor: default;
-  font-size: 36px;
-  font-family: Arial, sans-serif;
-  line-height: 1.8;
+  top: 800px;
 
   ::selection {
     background: transparent;
     color: initial;
   }
 
-  img {
-    display: none;
-  }
-
-  .text {
-    cursor: default;
+  .name {
+    font-size: 75px;
+    font-weight: 600;
+    line-height: 1;
 
     ::selection {
       background: transparent;
       color: initial;
     }
+  }
 
-    .sentence {
-      ::selection {
-        background: transparent;
-        color: initial;
-      }
-    }
+  .link {
+    color: #0645AD;
+    pointer-events: none;
+    text-decoration: none;
 
-    b {
-      font-weight: 600;
-
-      ::selection {
-        background: transparent;
-        color: initial;
-      }
-    }
-
-    i {
-      ::selection {
-        background: transparent;
-        color: initial;
-      }
-    }
-
-    .link {
-      color: #0645AD;
-      pointer-events: none;
-      text-decoration: none;
-
-      ::selection {
-        background: transparent;
-        color: initial;
-      }
+    ::selection {
+      background: transparent;
+      color: initial;
     }
   }
 `;
@@ -429,10 +356,10 @@ const ModalAddToCartButton = styled.button`
     'Helvetica Neue', Arial, sans-serif, 'Apple Color Emoji',
     'Segoe UI Emoji', 'Segoe UI Symbol';
   font-size: 1.125em;
-  font-weight: 500;
+  font-weight: 600;
   justify-content: center;
   outline: none;
-  padding: 1.5rem 1.5rem;
+  padding: 1rem 1.5rem;
   text-decoration: none;
 
   &:hover {
@@ -460,10 +387,6 @@ export {
   OffScreenHDShirtRender,
   TemporaryShirtImage,
   TempShirtContent,
-  TempShirtHeader,
-  TempShirtDivider,
-  TempShirtBranding,
-  TempShirtDescription,
   ModalUnderlay,
   PreviewModalContainer,
   PreviewModal,

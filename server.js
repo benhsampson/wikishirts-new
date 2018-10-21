@@ -4,8 +4,9 @@ const url = require('url');
 const queryString = require('querystring');
 const wtf = require('wtf_wikipedia');
 const fetch = require('node-fetch');
+// const markdownRouter = require('express-markdown-router');
 // const cloudinary = require('cloudinary');
-const aws = require('aws-sdk');
+// const aws = require('aws-sdk');
 
 require('dotenv').config();
 
@@ -14,9 +15,10 @@ const port = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+// app.use(markdownRouter(__dirname + '/pages'));
 
-app.get('/api/test', (req, res) => {
-  res.send({ success: 'Something was sent back' });
+app.get('/test/test', (req, res) => {
+  res.send({ express: 'Something was sent back' });
 });
 
 app.get('/api', async (req, res) => {
@@ -51,14 +53,33 @@ app.get('/api', async (req, res) => {
   });
 });
 
+const CHARACTER_LIMIT = 500;
+
 app.get('/api/single', async (req, res) => {
   const title = req.query.title;
 
   const response = await wtf.fetch(title)
     .then((doc) => {
+      const sentences = doc.sentences().map(({ data: { text } }) => text);
+
+      let reachedLimit = false;
+      let text = '';
+
+      for (let i = 0; i < sentences.length; i++) {
+        const proposedText = text + ' ' + sentences[i];
+
+        if (proposedText.length <= CHARACTER_LIMIT && !reachedLimit) {
+          text = proposedText.replace(/  +/g, ' ').trim();
+        } else {
+          reachedLimit = true;
+        }
+      }
+
       res.send({
         name: doc.options.title,
         content: doc.data.sections[0].html(),
+        text,
+        links: doc.data.sections[0].links().map(({ page }) => page),
         pageId: doc.options.pageID,
       });
     })
@@ -67,45 +88,13 @@ app.get('/api/single', async (req, res) => {
     });
 });
 
-aws.config.update({
-  region: 'ap-southeast-2',
-  accessKeyId: process.env.AWSAccessKeyId,
-  secretAccessKey: process.env.AWSSecretKey,
-});
-
-const S3_BUCKET = process.env.bucket;
-
-app.post('/api/upload-image', (req, res) => {
-  console.log('CALLING /api/upload-image');
-  //
-  // const s3 = new aws.s3();
-  // const fileName = req.body.fileName;
-  // const fileType = req.body.fileType;
-  //
-  // console.log(fileName, fileType);
-  //
-  // const s3Params = {
-  //   Bucket: S3_BUCKET,
-  //   Key: fileName,
-  //   Expires: 500,
-  //   ContentType: fileType,
-  //   ACL: 'public-read',
-  // };
-  //
-  // s3.getSignedUrl('putObject', s3Params, (err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //     res.json({ success: false, error: err });
-  //   }
-  //
-  //   const returnedData = {
-  //     signedRequest: data,
-  //     url: `http://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
-  //   };
-  //
-  //   res.json({ success: true, data: { returnData } });
-  // });
-});
+// aws.config.update({
+//   region: 'ap-southeast-2',
+//   accessKeyId: process.env.AWSAccessKeyId,
+//   secretAccessKey: process.env.AWSSecretKey,
+// });
+//
+// const S3_BUCKET = process.env.bucket;
 
 // TODO: Change secret and public key in production
 var stripe = require('stripe')(process.env.SECRET_KEY);
@@ -129,6 +118,38 @@ app.post('/api/create-and-pay-for-order', async (req, res) => {
     }
   });
 });
+
+// app.post('/api/upload-image', (req, res) => {
+//   console.log('CALLING /api/upload-image');
+//   //
+//   // const s3 = new aws.s3();
+//   // const fileName = req.body.fileName;
+//   // const fileType = req.body.fileType;
+//   //
+//   // console.log(fileName, fileType);
+//   //
+//   // const s3Params = {
+//   //   Bucket: S3_BUCKET,
+//   //   Key: fileName,
+//   //   Expires: 500,
+//   //   ContentType: fileType,
+//   //   ACL: 'public-read',
+//   // };
+//   //
+//   // s3.getSignedUrl('putObject', s3Params, (err, data) => {
+//   //   if (err) {
+//   //     console.log(err);
+//   //     res.json({ success: false, error: err });
+//   //   }
+//   //
+//   //   const returnedData = {
+//   //     signedRequest: data,
+//   //     url: `http://${S3_BUCKET}.s3.amazonaws.com/${fileName}`,
+//   //   };
+//   //
+//   //   res.json({ success: true, data: { returnData } });
+//   // });
+// });
 
 // // TODO: Use environmental variables here instead
 // cloudinary.config({

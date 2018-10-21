@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-// import ReactImageMagnify from 'react-image-magnify';
+import ReactImageMagnify from 'react-image-magnify';
 import html2canvas from 'html2canvas';
 import moment from 'moment';
 
@@ -14,12 +14,7 @@ import { convertToDollars, formatAsCurrency } from '../../../../utils/currency';
 import {
   ModalWrapper,
   OffScreenHDShirtRender,
-  // TemporaryShirtImage,
   TempShirtContent,
-  TempShirtHeader,
-  TempShirtDivider,
-  TempShirtBranding,
-  TempShirtDescription,
   ModalUnderlay,
   PreviewModalContainer,
   PreviewModal,
@@ -64,14 +59,37 @@ class Modal extends React.Component {
     closeModal: PropTypes.func.isRequired,
   };
 
-  componentDidMount() {
-    this.convertDOMToImage();
-  }
+  state = {
+    image: '',
+  };
 
   convertDOMToImage = () => {
     const node = document.getElementById('shirt-node');
 
-    setTimeout(() => {
+    const pTag = document.createElement('p');
+    let innerHTML = this.props.shirt.text;
+
+    const nameFinder = new RegExp(this.props.shirt.name, 'i');
+    // Enlarge the name of the article
+    innerHTML = innerHTML.replace(nameFinder, `<span class="name">${this.props.shirt.name}</span>`)
+
+    for (let i = 0; i < this.props.shirt.links.length; i++) {
+      if (innerHTML.includes(this.props.shirt.links[i])) {
+        console.log('LINK THAT SHOWS UP', this.props.shirt.links[i]);
+        console.log(innerHTML);
+        const linkFinder = new RegExp(this.props.shirt.links[i], 'gi')
+        innerHTML = innerHTML.replace(linkFinder, `<span class="link">${this.props.shirt.links[i]}</span>`);
+      }
+    }
+
+    console.log('Testing'.replace('Test', ''));
+
+    console.log('innerHTML', innerHTML);
+
+    pTag.innerHTML = innerHTML;
+    document.getElementById('shirt-content').appendChild(pTag);
+
+    if (!this.props.loading) {
       html2canvas(node, { backgroundColor: null }).then((canvas) => {
         this.mergeImages(['/images/shirt.png', canvas.toDataURL()])
           .then(async (b64) => {
@@ -81,63 +99,15 @@ class Modal extends React.Component {
             const image = new Image();
 
             image.src = b64;
-            image.alt = 'Image after conversion from canvas';
-            image.width = 300;
-            image.height = 300;
+            // image.alt = 'Image after conversion from canvas';
+            // image.width = 300;
+            // image.height = 300;
 
-            document.getElementById('paste-shirt').appendChild(image);
-
-            // Upload the image to S3
-            const currentDate = moment().format('MMM YYYY');
-            console.log(currentDate);
-            const fileName = `${this.props.shirt.name} ${moment().format('MMM YYYY')}`;
-            console.log(fileName);
-            const contentType = 'image/png';
-            console.log(b64);
-            const dataUriResponse = await fetch(b64),
-                  blob = await dataUriResponse.blob();
-            console.log(blob);
-
-            // const params = { Key: fileName, ContentType: contentType, Body: blob };
-
-            console.log('MERGED IMAGES SUCCESSFULLY', fileName, contentType, blob);
-
-            // const uploadResponse = await fetch('/api/upload-image', {
-            //   method: 'POST',
-            //   headers: {
-            //     'content-type': 'application/json',
-            //   },
-            //   body: JSON.stringify({
-            //     fileName,
-            //     fileType: contentType,
-            //     blob
-            //   }),
-            // });
-            const uploadResponse = await fetch('/api/test');
-            const uploadBody = await uploadResponse.json();
-
-            if (uploadResponse.status !== 200) console.error(uploadResponse.message);
-
-            console.log(uploadBody);
-
-            const uploadData = uploadBody.data.data.returnData;
-            const { signedRequest } = uploadData;
-
-            console.log(uploadData, signedRequest);
-
-            // TODO: Get the uploaded file from our AWS bucket using a fetch GET method request
-
-            // bucket.upload(params, (err, data) => {
-            //   if (err) {
-            //     console.log(err);
-            //   } else {
-            //     console.log('UPLOADED', data);
-            //   }
-            // });
+            this.setState({ image: b64 });
           })
           .catch((exception) => console.error(exception));
       });
-    }, 2000);
+    }
   };
 
   mergeImages = (sources = []) => new Promise(resolve => {
@@ -185,16 +155,7 @@ class Modal extends React.Component {
     return (
       <ModalWrapper>
         <OffScreenHDShirtRender id="shirt-node">
-          <TempShirtContent>
-            <TempShirtHeader>{shirt.name}</TempShirtHeader>
-            <TempShirtDivider />
-            <TempShirtBranding>
-              Copied from Wikipedia, pasted by Wikishirts
-            </TempShirtBranding>
-            <TempShirtDescription
-              dangerouslySetInnerHTML={{ __html: shirt.content }}
-            />
-          </TempShirtContent>
+          <TempShirtContent id="shirt-content" />
         </OffScreenHDShirtRender>
         <ModalUnderlay onClick={closeModal} />
         <PreviewModalContainer>
@@ -209,19 +170,28 @@ class Modal extends React.Component {
             </ModalHeader>
             <ModalContainer>
               <ModalShirtImageContainer id="paste-shirt">
-                {/* <ReactImageMagnify {...{
+                {this.state.image ? (
+                  <ReactImageMagnify {...{
                     smallImage: {
-                    alt: 'White Shirt w/ custom content',
-                    isFluidWidth: true,
-                    src: 'https://res.cloudinary.com/dnjad71gj/image/upload/v1537218129/shirt-underlay-background_ddqrl8.png',
-                  },
-                  largeImage: {
-                    width: 1400,
-                    height: 2100,
-                    src: 'https://res.cloudinary.com/dnjad71gj/image/upload/v1537218129/shirt-underlay-background_ddqrl8.png',
-                  },
-                  }}
-                /> */}
+                      alt: 'White Shirt w/ custom content',
+                      isFluidWidth: true,
+                      src: this.state.image,
+                    },
+                    largeImage: {
+                      width: 1000,
+                      height: 1000,
+                      src: this.state.image,
+                    },
+                    }}
+                  />
+                ) : (
+                  <img
+                    src="/images/shirt.png"
+                    alt="Shirt unloaded"
+                    style={{ width: '100%' }}
+                  />
+                )}
+                {/* Show the image merging happens */}
                 {/* <ShirtImage>
                   <TemporaryShirtImage
                     src="https://res.cloudinary.com/dnjad71gj/image/upload/v1537218129/shirt-underlay-background_ddqrl8.png"

@@ -8,10 +8,9 @@ const CartWrapper = styled.div`
 const CartButtonWrapper = styled.div`
   background: transparent;
   border: 0 0 0 4px;
-  right: 0;
-  padding: 2rem 1.5rem;
+  right: 1.5rem;
   position: fixed;
-  top: 0;
+  top: 2rem;
   z-index: 9;
 `;
 

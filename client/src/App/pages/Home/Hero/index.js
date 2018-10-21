@@ -34,11 +34,11 @@ class Hero extends React.Component {
     return (
       <Wrapper>
         <Container>
-          <ProductImage
+          {/* <ProductImage
             // TODO: replace this image
             src="https://images.pexels.com/photos/9816/pexels-photo-9816.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
             alt="Product Image"
-          />
+          /> */}
           <Headline>Wikishirts are <Emphasis>procedurally generated</Emphasis> T-shirts from Wikipedia.</Headline>
           <Subtitle>
             An unlimited selection of shirts on any topic you like. It doesn’t matter if you’re a nerd,

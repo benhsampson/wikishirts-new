@@ -7,7 +7,10 @@ import { StripeProvider } from 'react-stripe-elements';
 import { store, persistor } from '../store';
 
 import Home from './pages/Home';
-import Image from './pages/Image';
+import Privacy from './pages/legal/Privacy';
+import Terms from './pages/legal/Terms';
+import Shipping from './pages/legal/Shipping';
+import Refunds from './pages/legal/Refunds';
 
 class App extends React.Component {
   componentDidMount() {
@@ -28,8 +31,24 @@ class App extends React.Component {
                   component={Home}
                 />
                 <Route
-                  path="/image"
-                  component={Image}
+                  exact
+                  path="/privacy"
+                  component={Privacy}
+                />
+                <Route
+                  exact
+                  path="/terms"
+                  component={Terms}
+                />
+                <Route
+                  exact
+                  path="/shipping"
+                  component={Shipping}
+                />
+                <Route
+                  exact
+                  path="/refunds"
+                  component={Refunds}
                 />
               </main>
             </Router>
