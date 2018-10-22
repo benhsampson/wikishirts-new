@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import scrollToComponent from 'react-scroll-to-component';
@@ -35,13 +35,20 @@ import {
   ShirtPreviewButton,
 } from './style';
 
+import Context from '../../components/Context';
 import Container from './Container';
 import Modal from './Modal';
 import Cart from './Cart';
 import Hero from './Hero';
 import FAQ from './FAQ';
 
-class App extends Component {
+const Home = (props) => (
+  <Context.Consumer>
+    {mixpanel => <Component mixpanel={mixpanel} {...props} />}
+  </Context.Consumer>
+);
+
+class Component extends React.Component {
   state = {
     loading: false,
     error: '',
@@ -118,20 +125,30 @@ class App extends Component {
             if (shirts.length) {
               this.setState({ loading: false, error: '', shirts }, () => {
                 scrollToComponent(this.shirts, { offset: 1, align: 'top', duration: 800, ease: 'inOutSine' });
+
+                if (process.env.NODE_ENV === 'production')
+                  this.props.mixpanel.track('Search successful', { searchTerm: this.state.search });
               });
             } else {
               this.setState({
                 loading: false,
                 error: '* No results found, please try something else',
+              }, () => {
+                if (process.env.NODE_ENV === 'production')
+                  this.props.mixpanel.track('Search unsuccessful', { searchTerm: this.state.search });
               });
             }
           })
           .catch(err => this.setState({
             error: '* Couldn\'t load any shirts, please try again',
             loading: false,
+          }, () => {
+            if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Search unsuccessful', { searchTerm: this.state.search });
           }));
       } else {
-        this.setState({ error: '* Please type something here' })
+        this.setState({ error: '* Please type something here' }, () => {
+        })
       }
     }
   };
@@ -189,6 +206,9 @@ class App extends Component {
       size: shirtSizes.find(({ value }) => value === this.props.preferredSize),
     });
     this.props.updateGrandTotal();
+
+    if (process.env.NODE_ENV === 'production')
+      this.props.mixpanel.track('Added item to cart', { itemName: shirt.name });
   };
 
   removeFromCart = shirtId => {
@@ -204,7 +224,12 @@ class App extends Component {
 
   focusSearch = () => console.log(this.hero.current);
 
-  handleAddressUpsert = options => this.props.handleAddressUpsert(options);
+  handleAddressUpsert = options => {
+    this.props.handleAddressUpsert(options)
+
+    if (process.env.NODE_ENV === 'production')
+      this.props.mixpanel.track('Filled out address information');
+  };
 
   updateAddressOptions = options => this.props.updateAddressOptions(options);
 
@@ -222,6 +247,7 @@ class App extends Component {
       address,
       addressOptions,
       total,
+      mixpanel,
     } = this.props;
     return (
       <Wrapper open={this.state.previewModalOpen || this.state.cartOpen}>
@@ -245,6 +271,7 @@ class App extends Component {
           handleAddressUpsert={this.handleAddressUpsert}
           updateAddressOptions={this.updateAddressOptions}
           emptyCartItems={this.emptyCartItems}
+          mixpanel={mixpanel}
         />
         {this.state.previewModalOpen && <Modal
           ref={node => (this.modal = node)}
@@ -313,4 +340,4 @@ export default connect(mapStateToProps, {
   handleAddressUpsert,
   updateAddressOptions,
   updateGrandTotal,
-})(App);
+})(Home);

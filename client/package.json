@@ -5,7 +5,9 @@
   "dependencies": {
     "b64-to-blob": "^1.2.19",
     "canvas-to-image": "^2.0.0",
+    "dotenv": "^6.1.0",
     "html2canvas": "^1.0.0-alpha.12",
+    "mixpanel-browser": "^2.22.4",
     "moment": "^2.22.2",
     "polished": "^2.0.3",
     "prop-types": "^15.6.2",
@@ -36,15 +38,5 @@
     "eject": "react-scripts eject",
     "postbuild": "react-snap"
   },
-  "proxy": "http://localhost:5000/",
-  "devDependencies": {
-    "babel-eslint": "^10.0.1",
-    "babel-preset-es2017": "^6.24.1",
-    "eslint": "^5.7.0",
-    "eslint-config-react-app": "^3.0.4",
-    "eslint-plugin-flowtype": "^3.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.11.1"
-  }
+  "proxy": "http://localhost:5000/"
 }

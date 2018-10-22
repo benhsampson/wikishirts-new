@@ -57,7 +57,13 @@ const FAQ = () => (
         <QA>
           <Question>What's the returns policy?</Question>
           <Answer>
-            Return it if you don't like it. Please <LinkInline to="/contact">Contact us</LinkInline>, or check out our <LinkInline to="/returns">Returns Policy</LinkInline>.
+            Return it if it isn't satisfactory. Go ahead and contact us (using the button in the bottom right corner), or check out our <LinkInline to="/refunds">Returns & Refunds Policy</LinkInline>.
+          </Answer>
+        </QA>
+        <QA>
+          <Question>How do you manage our privacy?</Question>
+          <Answer>
+            We use third parties like Stripe to store your payment information. Check out our <LinkInline to="/privacy">Privacy Policy</LinkInline>.
           </Answer>
         </QA>
         <QA>

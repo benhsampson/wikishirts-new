@@ -96,7 +96,7 @@ app.get('/api/single', async (req, res) => {
 //
 // const S3_BUCKET = process.env.bucket;
 
-// TODO: Change secret and public key in production
+// TODO: ENSURE THIS IS SET TO PRODUCTION WHEN RELEVANT
 var stripe = require('stripe')(process.env.SECRET_KEY);
 
 app.post('/api/create-and-pay-for-order', async (req, res) => {

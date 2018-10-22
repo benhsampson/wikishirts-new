@@ -40,16 +40,19 @@ You are free to refuse our request for your personal information, with the under
 Your continued use of our website will be regarded as acceptance of our practices around privacy and personal information. If you have any questions about how we handle user data and personal information, feel free to contact us.
 `;
 
-const Privacy = (props) => (
-  <Wrapper>
-    <BrandHeader src={purplePattern} />
-    <Container>
-      <Content>
-        <BackButton onClick={() => props.history.push('/')} />
-        <ReactMarkdown source={privacy} />
-      </Content>
-    </Container>
-  </Wrapper>
-);
-
+class Privacy extends React.Component {
+  render() {
+    return (
+      <Wrapper>
+        <BrandHeader src={purplePattern} />
+        <Container>
+          <Content>
+            <BackButton onClick={() => this.props.history.push('/')} />
+            <ReactMarkdown source={privacy} />
+          </Content>
+        </Container>
+      </Wrapper>
+    );
+  }
+}
 export default Privacy;

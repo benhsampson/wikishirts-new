@@ -41,7 +41,7 @@ class Hero extends React.Component {
           /> */}
           <Headline>Wikishirts are <Emphasis>procedurally generated</Emphasis> T-shirts from Wikipedia.</Headline>
           <Subtitle>
-            An unlimited selection of shirts on any topic you like. It doesn’t matter if you’re a nerd,
+            An huge selection of white shirts on any topic you like. It doesn’t matter if you’re a nerd,
             hacker, pyromaniac, Motorsport enthusiast, or Samurai sword
             collector, there’s a Wikishirt for that.
           </Subtitle>

@@ -22,6 +22,9 @@ import {
   ModalHeading,
   ModalContainer,
   ModalShirtImageContainer,
+  ShirtImageAction,
+  UnloadedShirtContainer,
+  Loader,
   // ShirtImage,
   // ShirtImageContent,
   // ShirtImageHeader,
@@ -185,11 +188,14 @@ class Modal extends React.Component {
                     }}
                   />
                 ) : (
-                  <img
-                    src="/images/shirt.png"
-                    alt="Shirt unloaded"
-                    style={{ width: '100%' }}
-                  />
+                  <UnloadedShirtContainer>
+                    <Loader />
+                    <img
+                      src="/images/shirt.png"
+                      alt="Shirt unloaded"
+                      style={{ width: '100%' }}
+                    />
+                  </UnloadedShirtContainer>
                 )}
                 {/* Show the image merging happens */}
                 {/* <ShirtImage>
@@ -208,6 +214,9 @@ class Modal extends React.Component {
                     />
                   </ShirtImageContent>
                 </ShirtImage> */}
+                <ShirtImageAction>
+                  {'Don\'t like this design? Suggest a new one by clicking on the contact button in the bottom right'}
+                </ShirtImageAction>
               </ModalShirtImageContainer>
               <ModalContent>
                 <ModalShirtName>{shirt.name}</ModalShirtName>

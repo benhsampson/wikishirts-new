@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { lighten } from 'polished';
 
 const ModalWrapper = styled.div`
@@ -13,7 +13,7 @@ const OffScreenHDShirtRender = styled.div`
   position: absolute;
   pointer-events: none;
   height: 4000px;
-  ${'' /* left: -9999px; */}
+  left: -9999px;
   margin: auto;
   width: 4000px;
   text-align: justify;
@@ -148,6 +148,42 @@ const ShirtImage = styled.div`
   width: 100%;
   padding-top: 1.5rem;
   position: relative;
+`;
+
+const ShirtImageAction = styled.p`
+  color: rgba(0,0,0,0.7);
+  font-size: 1em;
+  margin-top: 1.25rem;
+`;
+
+const UnloadedShirtContainer = styled.div`
+  position: relative;
+`;
+
+const rotate = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const Loader = styled.div`
+  border: 5px solid rgba(0,0,0,0.1);
+  border-top: 5px solid rgba(0,0,0,0.4);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: ${rotate} 1s linear infinite;
+  position: absolute;
+
+  bottom: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 `;
 
 const ShirtImageContent = styled.div`
@@ -394,6 +430,9 @@ export {
   ModalHeading,
   ModalContainer,
   ModalShirtImageContainer,
+  ShirtImageAction,
+  UnloadedShirtContainer,
+  Loader,
   ShirtImage,
   ShirtImageContent,
   ShirtImageHeader,

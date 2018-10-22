@@ -48,6 +48,7 @@ class Cart extends React.Component {
     handleAddressUpsert: PropTypes.func.isRequired,
     updateAddressOptions: PropTypes.func.isRequired,
     emptyCartItems: PropTypes.func.isRequired,
+    mixpanel: PropTypes.object.isRequired,
   };
 
   static defaultProps = {
@@ -81,6 +82,7 @@ class Cart extends React.Component {
           total={this.props.total}
           goToStep={this.props.goToStep}
           emptyCartItems={this.props.emptyCartItems}
+          mixpanel={this.props.mixpanel}
         /></Elements>
       case 4:
         return <SuccessfulOrder

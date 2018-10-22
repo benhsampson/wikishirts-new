@@ -138,15 +138,24 @@ class Payment extends React.Component {
           });
           const body = await response.json();
 
-          if (response.status !== 200) this.setState({ error: `* ${body.message}` });
+          if (response.status !== 200) this.setState({ error: `* ${response.message}` }, () => {
+            if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Payment unsuccessful', { error: body.error });
+          });
 
           if (body.order) {
             this.setState({ loading: false, error: '', cardError: '' });
             this.props.emptyCartItems();
             this.props.goToStep(4);
+
+            if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Payment successful', { order: body.order });
           } else {
             console.log(body.error);
             this.setState({ loading: false, error: `* ${body.error.message}` });
+
+            if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Payment unsuccessful', { error: body.error });
           }
         }
       }

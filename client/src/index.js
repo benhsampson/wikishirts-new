@@ -2,11 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { injectGlobal } from 'styled-components';
 
+import dotenv from 'dotenv';
+
 import App from './App';
 
 import base from './constants/base';
 
 import registerServiceWorker from './registerServiceWorker';
+
+dotenv.config();
+
+console.log(process.env);
 
 injectGlobal`
   ${base};
