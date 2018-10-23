@@ -2,9 +2,9 @@
   "name": "wikishirts",
   "version": "1.0.0",
   "description": "Procedurally generated T-shirts from Wikipedia.",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "client": "cd client && yarn start",
     "server": "nodemon server.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
