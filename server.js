@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 // app.use(markdownRouter(__dirname + '/pages'));
 
-app.get('/test/test', (req, res) => {
+app.get('/api/hello', (req, res) => {
   res.send({ express: 'Something was sent back' });
 });
 
