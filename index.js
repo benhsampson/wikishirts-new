@@ -1,22 +1,20 @@
 const express = require('express');
 const path = require('path');
-// const bodyParser = require('body-parser');
-// const url = require('url');
-// const queryString = require('querystring');
-// const wtf = require('wtf_wikipedia');
-// const fetch = require('node-fetch');
-// const markdownRouter = require('express-markdown-router');
-// const cloudinary = require('cloudinary');
-// const aws = require('aws-sdk');
+const bodyParser = require('body-parser');
+const url = require('url');
+const queryString = require('querystring');
+const wtf = require('wtf_wikipedia');
+const fetch = require('node-fetch');
+const cloudinary = require('cloudinary');
+const aws = require('aws-sdk');
 
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-// app.use(markdownRouter(__dirname + '/pages'));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -24,73 +22,73 @@ app.get('/api/hello', (req, res) => {
   res.send({ express: 'Something was sent back' });
 });
 
-// app.get('/api', async (req, res) => {
-//   const search = req.query.search;
-//
-//   const response = await fetch(`https://en.wikipedia.org/w/api.php?&origin=*&action=opensearch&search=${search}&limit=3`);
-//   const body = await response.json();
-//
-//   if (response.status !== 200) {
-//     throw Error(body.message);
-//   }
-//
-//   const descriptionPromises = [];
-//
-//   body[1].forEach((title, index) => {
-//     descriptionPromises.push(new Promise(async (resolve, reject) => {
-//       try {
-//         resolve(await wtf.fetch(title).then((doc) => doc.sentences(0).text()));
-//       } catch (exception) {
-//         reject(exception);
-//       }
-//     }));
-//   });
-//
-//   Promise.all(descriptionPromises).then((descriptions) => {
-//     const shirts = body[1].map((title, index) => ({
-//       name: `${title}`,
-//       description: descriptions[index],
-//     }));
-//
-//     res.send(shirts);
-//   });
-// });
-//
-// const CHARACTER_LIMIT = 500;
-//
-// app.get('/api/single', async (req, res) => {
-//   const title = req.query.title;
-//
-//   const response = await wtf.fetch(title)
-//     .then((doc) => {
-//       const sentences = doc.sentences().map(({ data: { text } }) => text);
-//
-//       let reachedLimit = false;
-//       let text = '';
-//
-//       for (let i = 0; i < sentences.length; i++) {
-//         const proposedText = text + ' ' + sentences[i];
-//
-//         if (proposedText.length <= CHARACTER_LIMIT && !reachedLimit) {
-//           text = proposedText.replace(/  +/g, ' ').trim();
-//         } else {
-//           reachedLimit = true;
-//         }
-//       }
-//
-//       res.send({
-//         name: doc.options.title,
-//         content: doc.data.sections[0].html(),
-//         text,
-//         links: doc.data.sections[0].links().map(({ page }) => page),
-//         pageId: doc.options.pageID,
-//       });
-//     })
-//     .catch((exception) => {
-//       console.log('Critical error, could\'t view the freaking shirt.');
-//     });
-// });
-//
+app.get('/api', async (req, res) => {
+  const search = req.query.search;
+
+  const response = await fetch(`https://en.wikipedia.org/w/api.php?&origin=*&action=opensearch&search=${search}&limit=3`);
+  const body = await response.json();
+
+  if (response.status !== 200) {
+    throw Error(body.message);
+  }
+
+  const descriptionPromises = [];
+
+  body[1].forEach((title, index) => {
+    descriptionPromises.push(new Promise(async (resolve, reject) => {
+      try {
+        resolve(await wtf.fetch(title).then((doc) => doc.sentences(0).text()));
+      } catch (exception) {
+        reject(exception);
+      }
+    }));
+  });
+
+  Promise.all(descriptionPromises).then((descriptions) => {
+    const shirts = body[1].map((title, index) => ({
+      name: `${title}`,
+      description: descriptions[index],
+    }));
+
+    res.send(shirts);
+  });
+});
+
+const CHARACTER_LIMIT = 500;
+
+app.get('/api/single', async (req, res) => {
+  const title = req.query.title;
+
+  const response = await wtf.fetch(title)
+    .then((doc) => {
+      const sentences = doc.sentences().map(({ data: { text } }) => text);
+
+      let reachedLimit = false;
+      let text = '';
+
+      for (let i = 0; i < sentences.length; i++) {
+        const proposedText = text + ' ' + sentences[i];
+
+        if (proposedText.length <= CHARACTER_LIMIT && !reachedLimit) {
+          text = proposedText.replace(/  +/g, ' ').trim();
+        } else {
+          reachedLimit = true;
+        }
+      }
+
+      res.send({
+        name: doc.options.title,
+        content: doc.data.sections[0].html(),
+        text,
+        links: doc.data.sections[0].links().map(({ page }) => page),
+        pageId: doc.options.pageID,
+      });
+    })
+    .catch((exception) => {
+      console.log('Critical error, could\'t view the freaking shirt.');
+    });
+});
+
 // // aws.config.update({
 // //   region: 'ap-southeast-2',
 // //   accessKeyId: process.env.AWSAccessKeyId,
