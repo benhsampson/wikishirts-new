@@ -154,8 +154,6 @@ class Component extends React.Component {
   };
 
   findAndParseArticles = async () => {
-    console.log('SERVER URL', process.env.REACT_APP_SERVER_URL);
-
     const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api?search=${this.state.search}`);
     const body = await response.json();
 
