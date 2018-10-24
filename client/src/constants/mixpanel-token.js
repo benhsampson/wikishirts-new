@@ -1,1 +1,1 @@
-export default '0310997437c3ee8241cca412ad0a3822';
+export default process.env.REACT_APP_MIXPANEL_TOKEN;

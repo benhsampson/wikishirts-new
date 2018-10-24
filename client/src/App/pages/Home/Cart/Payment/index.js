@@ -129,7 +129,7 @@ class Payment extends React.Component {
             },
           };
 
-          const response = await fetch(`${process.env.SERVER_URL}/api/create-and-pay-for-order`, {
+          const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/create-and-pay-for-order`, {
             method: 'POST',
             headers: {
               'content-type': 'application/json',

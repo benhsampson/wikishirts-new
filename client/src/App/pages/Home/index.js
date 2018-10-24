@@ -154,7 +154,9 @@ class Component extends React.Component {
   };
 
   findAndParseArticles = async () => {
-    const response = await fetch(`${process.env.SERVER_URL}/api?search=${this.state.search}`);
+    console.log('SERVER URL', process.env.REACT_APP_SERVER_URL);
+
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api?search=${this.state.search}`);
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -175,7 +177,7 @@ class Component extends React.Component {
       },
     });
 
-    const response = await fetch(`${process.env.SERVER_URL}/api/single?title=${name}`);
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/single?title=${name}`);
     const body = await response.json();
 
     if (response.status !== 200) throw Error(body.message);
