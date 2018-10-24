@@ -85,7 +85,7 @@ app.get('/api/single', async (req, res) => {
       });
     })
     .catch((exception) => {
-      console.log('Critical error, could\'t view the freaking shirt.');
+      console.log('Critical error, cannot view the shirt.');
     });
 });
 

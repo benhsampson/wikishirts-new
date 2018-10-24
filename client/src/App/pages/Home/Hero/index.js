@@ -5,7 +5,6 @@ import LinkInline from '../LinkInline';
 
 import {
   Wrapper,
-  ProductImage,
   Headline,
   Emphasis,
   Subtitle,

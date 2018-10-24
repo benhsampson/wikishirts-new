@@ -12,8 +12,6 @@ import registerServiceWorker from './registerServiceWorker';
 
 dotenv.config();
 
-console.log(process.env);
-
 injectGlobal`
   ${base};
 `;

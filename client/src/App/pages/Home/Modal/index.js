@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ReactImageMagnify from 'react-image-magnify';
 import html2canvas from 'html2canvas';
-import moment from 'moment';
 
 import close from '../../../../assets/close.svg';
 import addShoppingCart from '../../../../assets/add-shopping-cart-white.svg';

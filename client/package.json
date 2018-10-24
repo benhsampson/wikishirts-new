@@ -5,6 +5,7 @@
   "dependencies": {
     "b64-to-blob": "^1.2.19",
     "canvas-to-image": "^2.0.0",
+    "country-state-city": "^0.0.5",
     "dotenv": "^6.1.0",
     "html2canvas": "^1.0.0-alpha.12",
     "mixpanel-browser": "^2.22.4",
@@ -20,6 +21,8 @@
     "react-scripts": "^2.0.0",
     "react-scroll-to-component": "^1.0.2",
     "react-scrollspy": "^3.3.5",
+    "react-select": "^2.1.1",
+    "react-snap": "^1.19.0",
     "react-stripe-elements": "^2.0.1",
     "react-validate-form": "^1.0.6",
     "redux": "^4.0.0",

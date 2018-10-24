@@ -96,8 +96,10 @@ app.get('/api/single', async (req, res) => {
 //
 // const S3_BUCKET = process.env.bucket;
 
+const stripeSecretKey = process.env.NODE_ENV === 'production' ? 'sk_live_tsKVaVtzOnb3nFmDvXIkjGxH' : 'sk_test_M5MCqo3tKjAuBcUPCvIVB0sP';
+
 // TODO: ENSURE THIS IS SET TO PRODUCTION WHEN RELEVANT
-var stripe = require('stripe')(process.env.SECRET_KEY);
+var stripe = require('stripe')(stripeSecretKey);
 
 app.post('/api/create-and-pay-for-order', async (req, res) => {
   console.log('CREATE-ORDER', req.body);
