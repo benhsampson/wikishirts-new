@@ -96,7 +96,7 @@ app.get('/api/single', async (req, res) => {
 //
 // const S3_BUCKET = process.env.bucket;
 
-const stripeSecretKey = process.env.NODE_ENV === 'production' ? 'sk_live_tsKVaVtzOnb3nFmDvXIkjGxH' : 'sk_test_M5MCqo3tKjAuBcUPCvIVB0sP';
+const stripeSecretKey = process.env.NODE_ENV === 'production' ? process.env.SECRET_KEY_LIVE : process.env.SECRET_KEY_TEST;
 
 // TODO: ENSURE THIS IS SET TO PRODUCTION WHEN RELEVANT
 var stripe = require('stripe')(stripeSecretKey);
