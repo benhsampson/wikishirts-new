@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "b64-to-blob": "^1.2.19",
     "canvas-to-image": "^2.0.0",
     "country-state-city": "^0.0.5",
@@ -41,7 +42,6 @@
     "eject": "react-scripts eject",
     "postbuild": "react-snap"
   },
-  "proxy": "https://guarded-headland-87063.herokuapp.com/",
   "browserslist": [
     ">0.2%",
     "not dead",

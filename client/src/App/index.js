@@ -21,8 +21,6 @@ import Context from './components/Context';
 
 mixpanel.init(mixpanelToken);
 
-console.log(process.env);
-
 class App extends React.Component {
   componentDidMount() {
     window.scrollTo(0, 0);

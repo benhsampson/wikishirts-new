@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import scrollToComponent from 'react-scroll-to-component';
+import axios from 'axios';
 
 import {
   addToCart,
@@ -154,14 +155,20 @@ class Component extends React.Component {
   };
 
   findAndParseArticles = async () => {
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api?search=${this.state.search}`);
-    const body = await response.json();
+    axios.get('https://guarded-headland-87063.herokuapp.com/api?search=pewdiepie')
+      .then((response) => console.log(response.data))
+      .catch((error) => console.error(error));
 
-    if (response.status !== 200) {
-      throw Error(body.message);
-    }
-
-    return body;
+    // const response = await fetch(`https://guarded-headland-87063.herokuapp.com/api?search=${this.state.search}`);
+    // axios.get(`https://guarded-headland-87063.herokuapp.com/api?search=${this.state.search}`)
+    //   .then((response) => {
+    //     console.log('RESPONSE', response);
+    //     return response;
+    //   })
+    //   .catch((error) => {
+    //     console.log('ERROR', error);
+    //     throw Error(error);
+    //   });
   };
 
   changeSelectedShirt = async (name) => {
@@ -175,20 +182,28 @@ class Component extends React.Component {
       },
     });
 
-    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/single?title=${name}`);
-    const body = await response.json();
+    // const response = await fetch(`https://guarded-headland-87063.herokuapp.com/api/single?title=${name}`);
+    // const body = await response.json();
 
-    if (response.status !== 200) throw Error(body.message);
+    axios.get(`https://guarded-headland-87063.herokuapp.com/api/single?title=${name}`)
+      .then((response) => {
+        console.log('RESPONSE', response);
 
-    // TODO: Overwriting price and description, this should be done on server
-    this.setState({
-      selectedShirtLoading: false,
-      selectedShirt: {
-        ...body,
-        description: shirtDescription,
-        price: shirtPrice,
-      }
-    }, () => this.convertDomToImage());
+        // TODO: Overwriting price and description, this should be done on server
+        this.setState({
+          selectedShirtLoading: false,
+          selectedShirt: {
+            ...response,
+            description: shirtDescription,
+            price: shirtPrice,
+          }
+        }, () => this.convertDomToImage());
+      })
+      .catch((error) => {
+        console.log('ERROR', error);
+
+        throw Error(error);
+      });
   };
 
   convertDomToImage = () => {
