@@ -1,17 +1,20 @@
 const express = require('express');
+const cors = require('cors');
 const path = require('path');
 const bodyParser = require('body-parser');
 const url = require('url');
 const queryString = require('querystring');
 const wtf = require('wtf_wikipedia');
 const fetch = require('node-fetch');
-const cloudinary = require('cloudinary');
-const aws = require('aws-sdk');
+// const cloudinary = require('cloudinary');
+// const aws = require('aws-sdk');
 
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -96,29 +99,31 @@ app.get('/api/single', async (req, res) => {
 // // });
 // //
 // // const S3_BUCKET = process.env.bucket;
-//
-// // TODO: ENSURE THIS IS SET TO PRODUCTION WHEN RELEVANT
-// var stripe = require('stripe')(process.env.SECRET_KEY);
-//
-// app.post('/api/create-and-pay-for-order', async (req, res) => {
-//   console.log('CREATE-ORDER', req.body);
-//
-//   stripe.orders.create(req.body.order, (error, order) => {
-//     if (error) {
-//       res.send({ error });
-//     } else {
-//       stripe.orders.pay(order.id, {
-//         source: req.body.source.id,
-//       }, (error, order) => {
-//         if (error) {
-//           res.send({ error });
-//         } else {
-//           res.send({ order })
-//         }
-//       });
-//     }
-//   });
-// });
+
+// TODO: ENSURE THIS IS SET TO PRODUCTION WHEN RELEVANT
+const stripeSecretKey = process.env.NODE_ENV === 'production' ? process.env.SECRET_KEY_LIVE : process.env.SECRET_KEY_TEST;
+
+var stripe = require('stripe')(stripeSecretKey);
+
+app.post('/api/create-and-pay-for-order', async (req, res) => {
+  console.log('CREATE-ORDER', req.body);
+
+  stripe.orders.create(req.body.order, (error, order) => {
+    if (error) {
+      res.send({ error });
+    } else {
+      stripe.orders.pay(order.id, {
+        source: req.body.source.id,
+      }, (error, order) => {
+        if (error) {
+          res.send({ error });
+        } else {
+          res.send({ order })
+        }
+      });
+    }
+  });
+});
 
 // app.post('/api/upload-image', (req, res) => {
 //   console.log('CALLING /api/upload-image');

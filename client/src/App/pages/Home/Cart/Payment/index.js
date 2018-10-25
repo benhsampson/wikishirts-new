@@ -7,7 +7,6 @@ import {
   // CardCVCElement,
   injectStripe,
 } from 'react-stripe-elements';
-import axios from 'axios';
 
 import { convertToDollars, formatAsCurrency } from '../../../../../utils/currency';
 
@@ -130,45 +129,35 @@ class Payment extends React.Component {
             },
           };
 
-          // const response = await fetch(`https://guarded-headland-87063.herokuapp.com/api/create-and-pay-for-order`, {
-          //   method: 'POST',
-          //   headers: {
-          //     'content-type': 'application/json',
-          //   },
-          //   body: JSON.stringify({  }),
-          // });
-          // const body = await response.json();
+          const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/create-and-pay-for-order`, {
+            method: 'POST',
+            headers: {
+              'content-type': 'application/json',
+            },
+            body: JSON.stringify({ order, source: token }),
+          });
+          const body = await response.json();
 
-          axios.post(`https://guarded-headland-87063.herokuapp.com/api/create-and-pay-for-order`, {
-            order,
-            source: token
-          })
-            .then((response) => {
-              console.log('RESPONSE', response);
+          if (response.status !== 200) throw Error(response.message);
 
-              if (response.order) {
-                this.setState({ loading: false, error: '', cardError: '' });
-                this.props.emptyCartItems();
-                this.props.goToStep(4);
+          if (body.order) {
+            this.setState({ loading: false, error: '', cardError: '' });
+            this.props.emptyCartItems();
+            this.props.goToStep(4);
 
-                if (process.env.NODE_ENV === 'production')
-                  this.props.mixpanel.track('Payment successful', { order: response.order });
-              } else {
-                console.log(response.error);
-                this.setState({ loading: false, error: `* ${response.error.message}` });
+            if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Payment successful', { order: body.order });
+          } else {
+            console.log('ERROR', error);
 
-                if (process.env.NODE_ENV === 'production')
-                  this.props.mixpanel.track('Payment unsuccessful', { error: response.error });
-              }
-            })
-            .catch((error) => {
-              console.log('ERROR', error);
-
-              if (error.status !== 200) this.setState({ error: `* ${error.message}` }, () => {
-                if (process.env.NODE_ENV === 'production')
-                this.props.mixpanel.track('Payment unsuccessful', { error: error.error });
-              });
+            if (error.status !== 200) this.setState({ error: `* ${error.message}` }, () => {
+              if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Payment unsuccessful', { error: error.error });
             });
+
+            if (process.env.NODE_ENV === 'production')
+              this.props.mixpanel.track('Payment unsuccessful', { error: body.error });
+          }
         }
       }
     }

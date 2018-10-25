@@ -5,7 +5,6 @@ const url = require('url');
 const queryString = require('querystring');
 const wtf = require('wtf_wikipedia');
 const fetch = require('node-fetch');
-// const markdownRouter = require('express-markdown-router');
 // const cloudinary = require('cloudinary');
 // const aws = require('aws-sdk');
 
@@ -18,7 +17,6 @@ app.use(cors());
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-// app.use(markdownRouter(__dirname + '/pages'));
 
 app.get('/api/hello', (req, res) => {
   res.send({ express: 'Something was sent back' });

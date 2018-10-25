@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import scrollToComponent from 'react-scroll-to-component';
-import axios from 'axios';
 
 import {
   addToCart,
@@ -122,7 +121,7 @@ class Component extends React.Component {
         this.setState({ loading: true });
 
         this.findAndParseArticles()
-          .then(shirts => {
+          .then((shirts) => {
             if (shirts.length) {
               this.setState({ loading: false, error: '', shirts }, () => {
                 scrollToComponent(this.shirts, { offset: 1, align: 'top', duration: 800, ease: 'inOutSine' });
@@ -155,20 +154,16 @@ class Component extends React.Component {
   };
 
   findAndParseArticles = async () => {
-    axios.get('https://guarded-headland-87063.herokuapp.com/api?search=pewdiepie')
-      .then((response) => console.log(response.data))
-      .catch((error) => console.error(error));
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api?search=${this.state.search}`);
+    const body = await response.json();
 
-    // const response = await fetch(`https://guarded-headland-87063.herokuapp.com/api?search=${this.state.search}`);
-    // axios.get(`https://guarded-headland-87063.herokuapp.com/api?search=${this.state.search}`)
-    //   .then((response) => {
-    //     console.log('RESPONSE', response);
-    //     return response;
-    //   })
-    //   .catch((error) => {
-    //     console.log('ERROR', error);
-    //     throw Error(error);
-    //   });
+    if (response.status !== 200) {
+      throw Error(response.message);
+    }
+
+    console.log('BODY', body);
+
+    return body;
   };
 
   changeSelectedShirt = async (name) => {
@@ -177,7 +172,7 @@ class Component extends React.Component {
       selectedShirt: {
         name: name,
         description: shirtDescription,
-        price: 0,
+        price: shirtPrice,
         pageId: 0,
       },
     });
@@ -185,25 +180,21 @@ class Component extends React.Component {
     // const response = await fetch(`https://guarded-headland-87063.herokuapp.com/api/single?title=${name}`);
     // const body = await response.json();
 
-    axios.get(`https://guarded-headland-87063.herokuapp.com/api/single?title=${name}`)
-      .then((response) => {
-        console.log('RESPONSE', response);
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/single?title=${name}`);
+    const body = await response.json();
 
-        // TODO: Overwriting price and description, this should be done on server
-        this.setState({
-          selectedShirtLoading: false,
-          selectedShirt: {
-            ...response,
-            description: shirtDescription,
-            price: shirtPrice,
-          }
-        }, () => this.convertDomToImage());
-      })
-      .catch((error) => {
-        console.log('ERROR', error);
+    if (response.status !== 200) throw Error(response.message);
 
-        throw Error(error);
-      });
+    console.log(body);
+
+    this.setState({
+      selectedShirtLoading: false,
+      selectedShirt: {
+        ...body,
+        description: shirtDescription,
+        price: shirtPrice,
+      }
+    }, () => this.convertDomToImage());
   };
 
   convertDomToImage = () => {
